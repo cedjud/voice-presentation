@@ -45,40 +45,69 @@ document.addEventListener('DOMContentLoaded', function(){
 
 
   // Functions
+
+  /**
+   * start speech recognition
+   * 
+   * @returns void
+   */
   function startSpeechRecognition() {
     console.log('start');
     recognition.start();
   };
 
+
+  /**
+   * end speech recognition
+   * 
+   * @returns void
+   */
   function stopSpeechRecognition() {
     console.log('stop');
     recognition.stop();
   };
 
+
+
+  /**
+   * animate slides
+   * @param {object} element
+   */
+  function animateSlide(slide){
+    slide.classList.remove('visible');
+    slide.classList.add('visible');
+  }
+
+
+
+  /**
+   * recognition result - handle voice input 
+   * @param {object} event 
+   */
   function recognitionResult(event){
-    // console.log(event.results);
-    // console.log(event.results.length);
     
+    // Get the most recent text input
     var last = event.results.length - 1;
     var trigger = event.results[last][0].transcript;
-    // console.log(trigger);
 
     if ( trigger.toLowerCase().indexOf(triggers[0]) != -1) {
       console.log(triggers[0]);
+
       slide.textContent = triggers[0];
+
+      animateSlide(slide);
+      
       triggers.shift();
-    } else if ( triggers.length <= 0 ){
+
+    } 
+
+    // else if there are no more triggers disable speech recognition
+    else if ( triggers.length <= 0 ){
       stopSpeechRecognition();
     }
   };
 
-
   recognition.onspeechend = function() {
     recognition.stop();
   }
-
-  recognition.onnomatch = function(event) {
-    diagnostic.textContent = 'I didnt recognise that color.';
-  }
-
 });

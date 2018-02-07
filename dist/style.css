@@ -24,5 +24,13 @@ section {
 
 .slides p {
   font-size: 2rem;
+
+  opacity: 0;
+  transition: opacity .2s;
 }
+
+.slides p.visible {
+  opacity: 1;
+}
+
 
